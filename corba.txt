@@ -1,0 +1,49 @@
+ORBit Beginners Documentation 
+Prev Chapter 5. First CORBA Programs Next 
+
+--------------------------------------------------------------------------------
+
+Echo client and server
+The aim for this example is to run a client which accepts typed input and this is printed out on the server on stdout
+
+The echo functionality is represented in the following very short IDL. 
+Example 5-1. 
+
+<<echo.idl>>
+
+The interface definition is the key part of the definition. Each interface defines an object which can have methods on it. In this case there is one method, which takes a string argument and returns nothing. The in declaration before the argument indicates that this arguments is only passed into the method. Generally all arguments are in arguments, for the first case.
+
+This idl is found in the file echo.idl. To compile the idl one does the following steps: $ orbit-idl echo.idl
+Echo client
+The client code is shown here 
+Example 5-2. 
+
+<<client.c>>
+
+The client can be broken down into three distinct sections. 
+
+Initialising the ORB 
+Getting the Object 
+Using the Object 
+The key part of the client is when it calls the echoString method on the server. The idl definition 
+     void echoString(in string input);
+Ends up becoming the following definition in the echo.h header file generated from the idl 
+extern void Echo_echoString(Echo _obj, CORBA_char * astring, CORBA_Environment *ev);
+This follows the accepted rules for Object based programming in C, that is 
+
+The Object is passed in as the first argument to the function 
+The method name is qualified by the object name beforehand 
+Exceptions are handled by a structure that is passed in as the last argument to the function 
+Of course, you don't have to follow this in your own code, but this is how the CORBA C mapping works, and it is not a bad solution.
+Echo Server
+The server is basically more complicated than the client, but has some commonality with the client. The server has to at the end of the day go into a main loop where it listens to connections. Before that it has to create the orb and bind its own implementations of the objects to the orb.
+
+In real life servers, this gets much more complicated, but as this is an example, it is pretty simple once you get through the orb initialisation process
+
+<<server.c>>
+
+More stuff on the server here by someone who understands
+
+--------------------------------------------------------------------------------
+Prev Home Next 
+First CORBA Programs Up Calculator Client Server 

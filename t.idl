@@ -1,0 +1,5 @@
+interface r
+{
+	typedef sequence <short>  short_list;
+	boolean Method (in short i);
+};
